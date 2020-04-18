@@ -5,13 +5,18 @@ class myBinarySearchTreeNode{
     
   myBinarySearchTreeNode(int inValue){
     // created a new node with empty child pointers
-
+    myValue = inValue;
+    left = null;
+    right = null;
   }
   
   myBinarySearchTreeNode(int[] A){
     // creates a new Binary Search Tree rooted at the first value in the array
     /// by inserting elements into the tree in the order they are given in A.
-
+    myBinarySearchTreeNode tree = new myBinarySearchTreeNode(A[0]);
+    for(int i=0; i<A.length; i++){
+      tree.insert(A[i]);
+    }
   }
   
   public void insert(int inValue){
@@ -21,14 +26,38 @@ class myBinarySearchTreeNode{
     //    * as the right child, 
     //    * in the left subtree,
     //    * or in the right subtree.
-    // If the value already exists in the tree, no action is taken. 
-    
+    // If the value already exists in the tree, no action is taken.
+    if (inValue > this.myValue){
+      if(right == null){
+        right = new myBinarySearchTreeNode(inValue);
+      }else{
+        right.insert(inValue);
+      }
+    }else{
+      if(inValue< myValue){
+        if(left == null) {
+          left = new myBinarySearchTreeNode(inValue);
+        }else{
+          left.insert(inValue);
+        }
+      }
+    }
+    if(inValue == myValue){
+      System.out.println("Duplicate detected");
+    }
   }
   
   public int height(){
      // This method recursively calculates the height of the entire (sub)tree.
      // This method will take O(n) time
-     return -1;
+    if(left != null){
+      left.height();
+    }
+    if(right != null){
+      right.height();
+    }
+    if(left < right) return right;
+    else return left;
   }
   
   public int depth(int search){
@@ -36,8 +65,22 @@ class myBinarySearchTreeNode{
      // If the given value is not in the tree, this method returns -1. 
      // Note that if the tree is a proper BST, this method should complete in O(log n) time.
      // Additionally, remember that the depth is the number of nodes on the path from a node to the root 
-     // (i.e. the number of the recursie calls).
+     // (i.e. the number of the recursive calls).
+    if(search < myValue) return left.depth(search) + 1;
+    if(search > myValue) return right.depth(search) + 1;
+    if(search == myValue) return 0;
     return -1;
+  }
+
+  public int size(){
+    int sum = 1;
+    if(left != null){
+      sum += left.size();
+    }
+    if(right != null){
+      sum += right.size();
+    }
+    return sum;
   }
   
   // Utility function included so you can debug your solution. 
